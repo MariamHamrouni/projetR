@@ -1,0 +1,69 @@
+---
+title: "Analyse des périmètres irrigués"
+subtitle: "EDA, KPI & Visualisation (Quarto)"
+author: "Hamrouni Mariem"
+date: today
+lang: fr
+---
+
+```{python}
+#| label: setup
+#| include: false
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from pathlib import Path
+
+DATA_PATH = (Path("..") / "data" / "perimetres-irrigues-public.xlsx").resolve()
+df_raw = pd.read_excel(DATA_PATH)
+
+df = df_raw.rename(columns={
+    "Nom Délégation": "Nom_Delegation_fr",
+    "Nom Delegation_arabe": "Nom_Delegation_ar",
+    "Superficies irrigables_ha": "Irrigable_ha",
+    "Superficies irriguées_ha": "Irriguee_ha",
+    "Superficies exploitées_ha": "Exploitee_ha",
+}).copy()
+
+df["Année"] = pd.to_numeric(df["Année"], errors="coerce").astype("Int64")
+for col in ["Irrigable_ha","Irriguee_ha","Exploitee_ha"]:
+    df[col] = pd.to_numeric(df[col], errors="coerce")
+
+df["Taux_irrigation_%"] = (df["Irriguee_ha"] / df["Irrigable_ha"]) * 100
+df["Taux_exploitation_%"] = (df["Exploitee_ha"] / df["Irrigable_ha"]) * 100
+df = df.drop_duplicates()
+```
+
+# Objectif
+Ce site présente une analyse descriptive des **périmètres irrigués** en Tunisie : superficies **irrigables**, **irriguées** et **exploitées**, ainsi que des **taux** (irrigation/exploitation).
+
+# Aperçu KPI
+
+```{python}
+kpi = {
+    "Nb lignes": len(df),
+    "Nb délégations": df["Nom_Delegation_fr"].nunique(dropna=True),
+    "Nb années": df["Année"].nunique(dropna=True),
+    "Total irrigable (ha)": round(float(df["Irrigable_ha"].sum()), 2),
+    "Total irriguée (ha)": round(float(df["Irriguee_ha"].sum()), 2),
+    "Total exploitée (ha)": round(float(df["Exploitee_ha"].sum()), 2),
+    "Taux irrigation moyen (%)": round(float(df["Taux_irrigation_%"].mean()), 2),
+}
+pd.DataFrame({"KPI": kpi.keys(), "Valeur": kpi.values()})
+```
+
+# Graphique rapide — évolution annuelle
+
+```{python}
+year = df.groupby("Année")[["Irrigable_ha","Irriguee_ha","Exploitee_ha"]].sum().sort_index()
+
+plt.figure(figsize=(8,4))
+plt.plot(year.index.astype(int), year["Irrigable_ha"], marker="o", label="Irrigable")
+plt.plot(year.index.astype(int), year["Irriguee_ha"], marker="o", label="Irriguée")
+plt.plot(year.index.astype(int), year["Exploitee_ha"], marker="o", label="Exploitée")
+plt.title("Évolution annuelle des superficies (ha)")
+plt.xlabel("Année"); plt.ylabel("Hectares")
+plt.legend()
+plt.tight_layout()
+plt.show()
+```
