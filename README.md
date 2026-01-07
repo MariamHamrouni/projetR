@@ -20,3 +20,4 @@ Importer `notebooks/Perimetres_Irrigues_EDA_KPI.ipynb` et uploader le fichier Ex
 
 ## Déploiement GitHub Pages (option)
 Push sur `main` → Actions → publication sur `gh-pages`.
+# projetR
