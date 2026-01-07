@@ -4,35 +4,35 @@
     "href": "rapport.html",
     "title": "Rapport — Périmètres irrigués",
     "section": "",
-    "text": "(28, 6)\n\n\n\n\n\n\n\n\n\n\n\nAnnée\nNom Délégation\nNom Delegation_arabe\nSuperficies irrigables_ha\nSuperficies irriguées_ha\nSuperficies exploitées_ha\n\n\n\n\n0\n2021\nZaghouan\nزغوان\n375\n213.00\n214.00\n\n\n1\n2021\nZriba\nالزريبة\n543\n125.00\n125.00\n\n\n2\n2021\nBir Mchergua\nبئر مشارقة\n400\n0.00\n0.00\n\n\n3\n2021\nFahs\nالفحص\n728\n331.50\n374.50\n\n\n4\n2021\nNadhour\nالناظور\n1395\n700.00\n1036.00\n\n\n5\n2021\nSaouaf\nصواف\n835\n219.50\n368.00\n\n\n6\n2021\nTOTAL\nالمجموع\n4276\n1589.00\n2117.50\n\n\n7\n2022\nZaghouan\nزغوان\n375\n226.25\n233.25\n\n\n8\n2022\nZriba\nالزريبة\n543\n107.50\n107.50\n\n\n9\n2022\nBir Mchergua\nبئر مشارقة\n400\n0.00\n0.00\n\n\n\n\n\n\n\n\n\nAnnée                          int64\nNom Délégation                object\nNom Delegation_arabe          object\nSuperficies irrigables_ha      int64\nSuperficies irriguées_ha     float64\nSuperficies exploitées_ha    float64\ndtype: object"
+    "text": "[1] 28  6\n\n\n\n\n# A tibble: 10 × 6\n   Année `Nom Délégation` `Nom Delegation_arabe` `Superficies irrigables_ha`\n   &lt;dbl&gt; &lt;chr&gt;            &lt;chr&gt;                                        &lt;dbl&gt;\n 1  2021 Zaghouan         زغوان                                          375\n 2  2021 Zriba            الزريبة                                        543\n 3  2021 Bir Mchergua     بئر مشارقة                                     400\n 4  2021 Fahs             الفحص                                          728\n 5  2021 Nadhour          الناظور                                       1395\n 6  2021 Saouaf           صواف                                           835\n 7  2021 TOTAL            المجموع                                       4276\n 8  2022 Zaghouan         زغوان                                          375\n 9  2022 Zriba            الزريبة                                        543\n10  2022 Bir Mchergua     بئر مشارقة                                     400\n# ℹ 2 more variables: `Superficies irriguées_ha` &lt;dbl&gt;,\n#   `Superficies exploitées_ha` &lt;dbl&gt;\n\n\n\n\ntibble [28 × 6] (S3: tbl_df/tbl/data.frame)\n $ Année                    : num [1:28] 2021 2021 2021 2021 2021 ...\n $ Nom Délégation           : chr [1:28] \"Zaghouan\" \"Zriba\" \"Bir Mchergua\" \"Fahs\" ...\n $ Nom Delegation_arabe     : chr [1:28] \"زغوان\" \"الزريبة\" \"بئر مشارقة\" \"الفحص\" ...\n $ Superficies irrigables_ha: num [1:28] 375 543 400 728 1395 ...\n $ Superficies irriguées_ha : num [1:28] 213 125 0 332 700 ...\n $ Superficies exploitées_ha: num [1:28] 214 125 0 374 1036 ..."
   },
   {
     "objectID": "rapport.html#valeurs-manquantes",
     "href": "rapport.html#valeurs-manquantes",
     "title": "Rapport — Périmètres irrigués",
     "section": "2.1 Valeurs manquantes",
-    "text": "2.1 Valeurs manquantes\n\n\n\n\n\n\n\n\n\npourcentage_NA\n\n\n\n\nTaux_irrigation_%\n7.14\n\n\nTaux_exploitation_%\n7.14\n\n\nAnnée\n0.00\n\n\nNom_Delegation_fr\n0.00\n\n\nIrrigable_ha\n0.00\n\n\nNom_Delegation_ar\n0.00\n\n\nExploitee_ha\n0.00\n\n\nIrriguee_ha\n0.00"
+    "text": "2.1 Valeurs manquantes\n\n\n# A tibble: 8 × 2\n  colonne               pourcentage_NA\n  &lt;chr&gt;                          &lt;dbl&gt;\n1 Taux_irrigation_pct             7.14\n2 Taux_exploitation_pct           7.14\n3 Année                           0   \n4 Nom_Delegation_fr               0   \n5 Nom_Delegation_ar               0   \n6 Irrigable_ha                    0   \n7 Irriguee_ha                     0   \n8 Exploitee_ha                    0"
   },
   {
     "objectID": "rapport.html#évolution-annuelle-sommes",
     "href": "rapport.html#évolution-annuelle-sommes",
     "title": "Rapport — Périmètres irrigués",
     "section": "4.1 Évolution annuelle (sommes)",
-    "text": "4.1 Évolution annuelle (sommes)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nIrrigable_ha\nIrriguee_ha\nExploitee_ha\n\n\nAnnée\n\n\n\n\n\n\n\n2021\n8552\n3178.0\n4235.0\n\n\n2022\n8552\n3082.0\n4007.0\n\n\n2023\n7752\n2623.0\n3312.0\n\n\n2024\n7974\n2748.0\n3351.0"
+    "text": "4.1 Évolution annuelle (sommes)"
   },
   {
     "objectID": "rapport.html#taux-moyens-par-année",
     "href": "rapport.html#taux-moyens-par-année",
     "title": "Rapport — Périmètres irrigués",
     "section": "4.2 Taux moyens par année",
-    "text": "4.2 Taux moyens par année\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTaux_irrigation_%\nTaux_exploitation_%\n\n\nAnnée\n\n\n\n\n\n\n2021\n34.140501\n42.769557\n\n\n2022\n32.578329\n39.971659\n\n\n2023\n34.940213\n41.844134\n\n\n2024\n36.687734\n42.365382"
+    "text": "4.2 Taux moyens par année"
   },
   {
-    "objectID": "rapport.html#top-délégations-taux-irrigation",
-    "href": "rapport.html#top-délégations-taux-irrigation",
+    "objectID": "rapport.html#top-10-délégations-taux-irrigation",
+    "href": "rapport.html#top-10-délégations-taux-irrigation",
     "title": "Rapport — Périmètres irrigués",
-    "section": "4.3 Top délégations (taux irrigation)",
-    "text": "4.3 Top délégations (taux irrigation)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTaux_irrigation_moyen_%\n\n\nNom_Delegation_fr\n\n\n\n\n\nZaghouan\n65.765844\n\n\nNadhour\n45.703405\n\n\nTOTAL\n35.374421\n\n\nFahs\n29.618819\n\n\nSaouaf\n24.348802\n\n\nZriba\n23.388582\n\n\nBir Mchergua\n0.000000"
+    "section": "4.3 Top 10 délégations (taux irrigation)",
+    "text": "4.3 Top 10 délégations (taux irrigation)"
   },
   {
     "objectID": "rapport.html#scatter-irrigable-vs-irriguée",
@@ -46,14 +46,14 @@
     "href": "rapport.html#heatmap-délégation-année-taux-irrigation",
     "title": "Rapport — Périmètres irrigués",
     "section": "4.5 Heatmap : délégation × année (taux irrigation)",
-    "text": "4.5 Heatmap : délégation × année (taux irrigation)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAnnée\n2021\n2022\n2023\n2024\n\n\nNom_Delegation_fr\n\n\n\n\n\n\n\n\nBir Mchergua\n0.000000\n0.000000\nNaN\nNaN\n\n\nFahs\n45.535714\n32.280220\n38.049451\n2.609890\n\n\nNadhour\n50.179211\n54.928315\n39.211470\n38.494624\n\n\nSaouaf\n26.287425\n24.670659\n18.413174\n28.023952\n\n\nTOTAL\n37.160898\n36.038354\n33.836429\n34.462002\n\n\nZaghouan\n56.800000\n60.333333\n60.333333\n85.596708\n\n\nZriba\n23.020258\n19.797422\n19.797422\n30.939227"
+    "text": "4.5 Heatmap : délégation × année (taux irrigation)"
   },
   {
     "objectID": "rapport.html#exports",
     "href": "rapport.html#exports",
     "title": "Rapport — Périmètres irrigués",
     "section": "6.1 Exports",
-    "text": "6.1 Exports\n\n\nCode\ndf.to_csv(\"perimetres_irrigues_clean.csv\", index=False, encoding=\"utf-8\")\nkpi_df.to_csv(\"kpi_perimetres_irrigues.csv\", index=False, encoding=\"utf-8\")\nprint(\"✅ Exports générés.\")\n\n\n✅ Exports générés."
+    "text": "6.1 Exports\n\n\nCode\nwrite.csv(df, \"perimetres_irrigues_clean.csv\", row.names = FALSE, fileEncoding = \"UTF-8\")\nwrite.csv(kpi, \"kpi_perimetres_irrigues.csv\", row.names = FALSE, fileEncoding = \"UTF-8\")\ncat(\"✅ Exports générés : perimetres_irrigues_clean.csv, kpi_perimetres_irrigues.csv\\n\")\n\n\n✅ Exports générés : perimetres_irrigues_clean.csv, kpi_perimetres_irrigues.csv"
   },
   {
     "objectID": "index.html",

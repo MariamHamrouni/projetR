@@ -4,172 +4,229 @@ subtitle: "Data processing, KPI & visualisations"
 author: "Hamrouni Mariem"
 date: today
 lang: fr
+format:
+  html:
+    toc: true
+    toc-location: left
+    toc-depth: 3
+    number-sections: true
+execute:
+  echo: false
+  warning: false
+  message: false
 ---
 
-```{python}
+```{r}
 #| label: setup
 #| include: false
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-from pathlib import Path
 
-DATA_PATH = (Path("..") / "data" / "perimetres-irrigues-public.xlsx").resolve()
-df_raw = pd.read_excel(DATA_PATH)
+library(readxl)
+library(dplyr)
+library(stringr)
+library(tidyr)
+library(ggplot2)
+library(knitr)
+library(scales)
+```
+
+```{r}
+#| label: load
+#| include: false
+
+DATA_PATH <- file.path("..", "data", "perimetres-irrigues-public.xlsx")
+df_raw <- read_excel(DATA_PATH)
+
+# Nettoyage des noms
+names(df_raw) <- str_trim(names(df_raw))
+
+# Debug (décommente si besoin)
+# print(names(df_raw))
 ```
 
 # Inspection des données
 
-```{python}
-df_raw.shape
+```{r}
+dim(df_raw)
 ```
 
-```{python}
-df_raw.head(10)
+```{r}
+head(df_raw, 10)
 ```
 
-```{python}
-df_raw.dtypes
+```{r}
+str(df_raw)
 ```
 
 # Data processing
 
-```{python}
-df = df_raw.rename(columns={
-    "Nom Délégation": "Nom_Delegation_fr",
-    "Nom Delegation_arabe": "Nom_Delegation_ar",
-    "Superficies irrigables_ha": "Irrigable_ha",
-    "Superficies irriguées_ha": "Irriguee_ha",
-    "Superficies exploitées_ha": "Exploitee_ha",
-}).copy()
+```{r}
+rename_if_exists <- function(.data, old, new) {
+  if (old %in% names(.data)) dplyr::rename(.data, !!new := all_of(old)) else .data
+}
 
-df["Année"] = pd.to_numeric(df["Année"], errors="coerce").astype("Int64")
-for col in ["Irrigable_ha","Irriguee_ha","Exploitee_ha"]:
-    df[col] = pd.to_numeric(df[col], errors="coerce")
+df <- df_raw %>%
+  rename_if_exists("Nom Délégation", "Nom_Delegation_fr") %>%
+  rename_if_exists("Nom Delegation_arabe", "Nom_Delegation_ar") %>%
+  rename_if_exists("Superficies irrigables_ha", "Irrigable_ha") %>%
+  rename_if_exists("Superficies irriguées_ha", "Irriguee_ha") %>%
+  rename_if_exists("Superficies exploitées_ha", "Exploitee_ha")
 
-df["Taux_irrigation_%"] = (df["Irriguee_ha"] / df["Irrigable_ha"]) * 100
-df["Taux_exploitation_%"] = (df["Exploitee_ha"] / df["Irrigable_ha"]) * 100
+df <- df %>%
+  mutate(
+    Année = suppressWarnings(as.integer(Année)),
+    Irrigable_ha = suppressWarnings(as.numeric(Irrigable_ha)),
+    Irriguee_ha = suppressWarnings(as.numeric(Irriguee_ha)),
+    Exploitee_ha = suppressWarnings(as.numeric(Exploitee_ha))
+  ) %>%
+  mutate(
+    Taux_irrigation_pct = (Irriguee_ha / Irrigable_ha) * 100,
+    Taux_exploitation_pct = (Exploitee_ha / Irrigable_ha) * 100
+  )
 
-before = len(df)
-df = df.drop_duplicates()
-(before - len(df)), df.shape
+before <- nrow(df)
+df <- df %>% distinct()
+c(doublons_supprimes = before - nrow(df), n_lignes = nrow(df), n_colonnes = ncol(df))
 ```
 
 ## Valeurs manquantes
 
-```{python}
-na = (df.isna().mean()*100).round(2).sort_values(ascending=False)
-na.to_frame("pourcentage_NA")
+```{r}
+na_df <- df %>%
+  summarise(across(everything(), ~ mean(is.na(.)) * 100)) %>%
+  pivot_longer(everything(), names_to = "colonne", values_to = "pourcentage_NA") %>%
+  arrange(desc(pourcentage_NA))
+
+na_df
 ```
 
-```{python}
-plt.figure(figsize=(9,3.8))
-plt.bar(na.index.astype(str), na.values)
-plt.xticks(rotation=45, ha="right")
-plt.title("Valeurs manquantes (%)")
-plt.tight_layout()
-plt.show()
+```{r}
+ggplot(na_df, aes(x = reorder(colonne, -pourcentage_NA), y = pourcentage_NA)) +
+  geom_col() +
+  labs(title = "Valeurs manquantes (%)", x = NULL, y = "%") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
 # KPI
 
-```{python}
-kpi = {
-    "Nb lignes": len(df),
-    "Nb délégations": df["Nom_Delegation_fr"].nunique(dropna=True),
-    "Nb années": df["Année"].nunique(dropna=True),
-    "Total irrigable (ha)": round(float(df["Irrigable_ha"].sum()), 2),
-    "Total irriguée (ha)": round(float(df["Irriguee_ha"].sum()), 2),
-    "Total exploitée (ha)": round(float(df["Exploitee_ha"].sum()), 2),
-    "Taux irrigation moyen (%)": round(float(df["Taux_irrigation_%"].mean()), 2),
-    "Taux exploitation moyen (%)": round(float(df["Taux_exploitation_%"].mean()), 2),
-}
-kpi_df = pd.DataFrame({"KPI": kpi.keys(), "Valeur": kpi.values()})
-kpi_df
+```{r}
+kpi <- tibble(
+  KPI = c(
+    "Nb lignes",
+    "Nb délégations",
+    "Nb années",
+    "Total irrigable (ha)",
+    "Total irriguée (ha)",
+    "Total exploitée (ha)",
+    "Taux irrigation moyen (%)",
+    "Taux exploitation moyen (%)"
+  ),
+  Valeur = c(
+    nrow(df),
+    n_distinct(df$Nom_Delegation_fr, na.rm = TRUE),
+    n_distinct(df$Année, na.rm = TRUE),
+    round(sum(df$Irrigable_ha, na.rm = TRUE), 2),
+    round(sum(df$Irriguee_ha, na.rm = TRUE), 2),
+    round(sum(df$Exploitee_ha, na.rm = TRUE), 2),
+    round(mean(df$Taux_irrigation_pct, na.rm = TRUE), 2),
+    round(mean(df$Taux_exploitation_pct, na.rm = TRUE), 2)
+  )
+)
+
+kpi
 ```
 
 # Visualisations
 
 ## Évolution annuelle (sommes)
 
-```{python}
-year = df.groupby("Année")[["Irrigable_ha","Irriguee_ha","Exploitee_ha"]].sum().sort_index()
+```{r}
+year <- df %>%
+  group_by(Année) %>%
+  summarise(
+    Irrigable_ha = sum(Irrigable_ha, na.rm = TRUE),
+    Irriguee_ha = sum(Irriguee_ha, na.rm = TRUE),
+    Exploitee_ha = sum(Exploitee_ha, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  arrange(Année)
 
-plt.figure(figsize=(8,4))
-plt.plot(year.index.astype(int), year["Irrigable_ha"], marker="o", label="Irrigable")
-plt.plot(year.index.astype(int), year["Irriguee_ha"], marker="o", label="Irriguée")
-plt.plot(year.index.astype(int), year["Exploitee_ha"], marker="o", label="Exploitée")
-plt.title("Évolution annuelle des superficies (ha)")
-plt.xlabel("Année"); plt.ylabel("Hectares")
-plt.legend()
-plt.tight_layout()
-plt.show()
+year_long <- year %>%
+  pivot_longer(-Année, names_to = "Type", values_to = "Hectares")
 
-year
+ggplot(year_long, aes(x = Année, y = Hectares, color = Type)) +
+  geom_line() +
+  geom_point() +
+  labs(title = "Évolution annuelle des superficies (ha)", x = "Année", y = "Hectares") +
+  theme_minimal()
 ```
 
 ## Taux moyens par année
 
-```{python}
-ty = df.groupby("Année")[["Taux_irrigation_%","Taux_exploitation_%"]].mean().sort_index()
+```{r}
+ty <- df %>%
+  group_by(Année) %>%
+  summarise(
+    Taux_irrigation_pct = mean(Taux_irrigation_pct, na.rm = TRUE),
+    Taux_exploitation_pct = mean(Taux_exploitation_pct, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  arrange(Année)
 
-plt.figure(figsize=(8,4))
-plt.plot(ty.index.astype(int), ty["Taux_irrigation_%"], marker="o", label="Taux irrigation (%)")
-plt.plot(ty.index.astype(int), ty["Taux_exploitation_%"], marker="o", label="Taux exploitation (%)")
-plt.title("Évolution des taux moyens (%)")
-plt.xlabel("Année"); plt.ylabel("%")
-plt.legend()
-plt.tight_layout()
-plt.show()
+ty_long <- ty %>%
+  pivot_longer(-Année, names_to = "Type", values_to = "Taux")
 
-ty
+ggplot(ty_long, aes(x = Année, y = Taux, color = Type)) +
+  geom_line() +
+  geom_point() +
+  labs(title = "Évolution des taux moyens (%)", x = "Année", y = "%") +
+  theme_minimal()
 ```
 
-## Top délégations (taux irrigation)
+## Top 10 délégations (taux irrigation)
 
-```{python}
-top = (df.groupby("Nom_Delegation_fr")["Taux_irrigation_%"].mean()
-       .sort_values(ascending=False).head(10))
+```{r}
+top <- df %>%
+  group_by(Nom_Delegation_fr) %>%
+  summarise(Taux_irrigation_moyen = mean(Taux_irrigation_pct, na.rm = TRUE), .groups = "drop") %>%
+  arrange(desc(Taux_irrigation_moyen)) %>%
+  slice_head(n = 10)
 
-plt.figure(figsize=(10,4))
-plt.bar(top.index.astype(str), top.values)
-plt.xticks(rotation=60, ha="right")
-plt.title("Top 10 délégations — Taux d'irrigation moyen (%)")
-plt.tight_layout()
-plt.show()
-
-top.to_frame("Taux_irrigation_moyen_%")
+ggplot(top, aes(x = reorder(Nom_Delegation_fr, Taux_irrigation_moyen), y = Taux_irrigation_moyen)) +
+  geom_col() +
+  coord_flip() +
+  labs(title = "Top 10 délégations — Taux d'irrigation moyen (%)", x = NULL, y = "%") +
+  theme_minimal()
 ```
 
 ## Scatter : irrigable vs irriguée
 
-```{python}
-plt.figure(figsize=(6,4))
-plt.scatter(df["Irrigable_ha"], df["Irriguee_ha"])
-plt.title("Irrigable (ha) vs Irriguée (ha)")
-plt.xlabel("Irrigable (ha)")
-plt.ylabel("Irriguée (ha)")
-plt.tight_layout()
-plt.show()
+```{r}
+ggplot(df, aes(x = Irrigable_ha, y = Irriguee_ha)) +
+  geom_point(alpha = 0.6) +
+  labs(title = "Irrigable (ha) vs Irriguée (ha)", x = "Irrigable (ha)", y = "Irriguée (ha)") +
+  theme_minimal()
 ```
 
 ## Heatmap : délégation × année (taux irrigation)
 
-```{python}
-pivot = df.pivot_table(index="Nom_Delegation_fr", columns="Année", values="Taux_irrigation_%", aggfunc="mean")
-top12 = df["Nom_Delegation_fr"].value_counts().head(12).index
-p2 = pivot.loc[pivot.index.isin(top12)]
+```{r}
+top12_names <- df %>%
+  count(Nom_Delegation_fr, sort = TRUE) %>%
+  slice_head(n = 12) %>%
+  pull(Nom_Delegation_fr)
 
-plt.figure(figsize=(9,4.8))
-plt.imshow(p2.values, aspect="auto")
-plt.colorbar(label="Taux irrigation (%)")
-plt.xticks(range(len(p2.columns)), p2.columns.astype(int))
-plt.yticks(range(len(p2.index)), p2.index.astype(str))
-plt.title("Heatmap — Taux irrigation (%) | Top 12 délégations × années")
-plt.tight_layout()
-plt.show()
+heat <- df %>%
+  filter(Nom_Delegation_fr %in% top12_names) %>%
+  group_by(Nom_Delegation_fr, Année) %>%
+  summarise(taux = mean(Taux_irrigation_pct, na.rm = TRUE), .groups = "drop")
 
-p2
+ggplot(heat, aes(x = Année, y = Nom_Delegation_fr, fill = taux)) +
+  geom_tile() +
+  scale_fill_gradient(low = "white", high = "steelblue", na.value = "grey90") +
+  labs(title = "Heatmap — Taux irrigation (%) | Top 12 délégations × années",
+       x = "Année", y = NULL, fill = "%") +
+  theme_minimal()
 ```
 
 # Conclusion
@@ -182,9 +239,9 @@ p2
 
 ## Exports
 
-```{python}
+```{r}
 #| echo: true
-df.to_csv("perimetres_irrigues_clean.csv", index=False, encoding="utf-8")
-kpi_df.to_csv("kpi_perimetres_irrigues.csv", index=False, encoding="utf-8")
-print("✅ Exports générés.")
+write.csv(df, "perimetres_irrigues_clean.csv", row.names = FALSE, fileEncoding = "UTF-8")
+write.csv(kpi, "kpi_perimetres_irrigues.csv", row.names = FALSE, fileEncoding = "UTF-8")
+cat("✅ Exports générés : perimetres_irrigues_clean.csv, kpi_perimetres_irrigues.csv\n")
 ```
