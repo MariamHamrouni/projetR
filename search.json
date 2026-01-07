@@ -1,0 +1,65 @@
+[
+  {
+    "objectID": "rapport.html",
+    "href": "rapport.html",
+    "title": "Rapport — Périmètres irrigués",
+    "section": "",
+    "text": "(28, 6)\n\n\n\n\n\n\n\n\n\n\n\nAnnée\nNom Délégation\nNom Delegation_arabe\nSuperficies irrigables_ha\nSuperficies irriguées_ha\nSuperficies exploitées_ha\n\n\n\n\n0\n2021\nZaghouan\nزغوان\n375\n213.00\n214.00\n\n\n1\n2021\nZriba\nالزريبة\n543\n125.00\n125.00\n\n\n2\n2021\nBir Mchergua\nبئر مشارقة\n400\n0.00\n0.00\n\n\n3\n2021\nFahs\nالفحص\n728\n331.50\n374.50\n\n\n4\n2021\nNadhour\nالناظور\n1395\n700.00\n1036.00\n\n\n5\n2021\nSaouaf\nصواف\n835\n219.50\n368.00\n\n\n6\n2021\nTOTAL\nالمجموع\n4276\n1589.00\n2117.50\n\n\n7\n2022\nZaghouan\nزغوان\n375\n226.25\n233.25\n\n\n8\n2022\nZriba\nالزريبة\n543\n107.50\n107.50\n\n\n9\n2022\nBir Mchergua\nبئر مشارقة\n400\n0.00\n0.00\n\n\n\n\n\n\n\n\n\nAnnée                          int64\nNom Délégation                object\nNom Delegation_arabe          object\nSuperficies irrigables_ha      int64\nSuperficies irriguées_ha     float64\nSuperficies exploitées_ha    float64\ndtype: object"
+  },
+  {
+    "objectID": "rapport.html#valeurs-manquantes",
+    "href": "rapport.html#valeurs-manquantes",
+    "title": "Rapport — Périmètres irrigués",
+    "section": "2.1 Valeurs manquantes",
+    "text": "2.1 Valeurs manquantes\n\n\n\n\n\n\n\n\n\npourcentage_NA\n\n\n\n\nTaux_irrigation_%\n7.14\n\n\nTaux_exploitation_%\n7.14\n\n\nAnnée\n0.00\n\n\nNom_Delegation_fr\n0.00\n\n\nIrrigable_ha\n0.00\n\n\nNom_Delegation_ar\n0.00\n\n\nExploitee_ha\n0.00\n\n\nIrriguee_ha\n0.00"
+  },
+  {
+    "objectID": "rapport.html#évolution-annuelle-sommes",
+    "href": "rapport.html#évolution-annuelle-sommes",
+    "title": "Rapport — Périmètres irrigués",
+    "section": "4.1 Évolution annuelle (sommes)",
+    "text": "4.1 Évolution annuelle (sommes)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nIrrigable_ha\nIrriguee_ha\nExploitee_ha\n\n\nAnnée\n\n\n\n\n\n\n\n2021\n8552\n3178.0\n4235.0\n\n\n2022\n8552\n3082.0\n4007.0\n\n\n2023\n7752\n2623.0\n3312.0\n\n\n2024\n7974\n2748.0\n3351.0"
+  },
+  {
+    "objectID": "rapport.html#taux-moyens-par-année",
+    "href": "rapport.html#taux-moyens-par-année",
+    "title": "Rapport — Périmètres irrigués",
+    "section": "4.2 Taux moyens par année",
+    "text": "4.2 Taux moyens par année\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTaux_irrigation_%\nTaux_exploitation_%\n\n\nAnnée\n\n\n\n\n\n\n2021\n34.140501\n42.769557\n\n\n2022\n32.578329\n39.971659\n\n\n2023\n34.940213\n41.844134\n\n\n2024\n36.687734\n42.365382"
+  },
+  {
+    "objectID": "rapport.html#top-délégations-taux-irrigation",
+    "href": "rapport.html#top-délégations-taux-irrigation",
+    "title": "Rapport — Périmètres irrigués",
+    "section": "4.3 Top délégations (taux irrigation)",
+    "text": "4.3 Top délégations (taux irrigation)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nTaux_irrigation_moyen_%\n\n\nNom_Delegation_fr\n\n\n\n\n\nZaghouan\n65.765844\n\n\nNadhour\n45.703405\n\n\nTOTAL\n35.374421\n\n\nFahs\n29.618819\n\n\nSaouaf\n24.348802\n\n\nZriba\n23.388582\n\n\nBir Mchergua\n0.000000"
+  },
+  {
+    "objectID": "rapport.html#scatter-irrigable-vs-irriguée",
+    "href": "rapport.html#scatter-irrigable-vs-irriguée",
+    "title": "Rapport — Périmètres irrigués",
+    "section": "4.4 Scatter : irrigable vs irriguée",
+    "text": "4.4 Scatter : irrigable vs irriguée"
+  },
+  {
+    "objectID": "rapport.html#heatmap-délégation-année-taux-irrigation",
+    "href": "rapport.html#heatmap-délégation-année-taux-irrigation",
+    "title": "Rapport — Périmètres irrigués",
+    "section": "4.5 Heatmap : délégation × année (taux irrigation)",
+    "text": "4.5 Heatmap : délégation × année (taux irrigation)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAnnée\n2021\n2022\n2023\n2024\n\n\nNom_Delegation_fr\n\n\n\n\n\n\n\n\nBir Mchergua\n0.000000\n0.000000\nNaN\nNaN\n\n\nFahs\n45.535714\n32.280220\n38.049451\n2.609890\n\n\nNadhour\n50.179211\n54.928315\n39.211470\n38.494624\n\n\nSaouaf\n26.287425\n24.670659\n18.413174\n28.023952\n\n\nTOTAL\n37.160898\n36.038354\n33.836429\n34.462002\n\n\nZaghouan\n56.800000\n60.333333\n60.333333\n85.596708\n\n\nZriba\n23.020258\n19.797422\n19.797422\n30.939227"
+  },
+  {
+    "objectID": "rapport.html#exports",
+    "href": "rapport.html#exports",
+    "title": "Rapport — Périmètres irrigués",
+    "section": "6.1 Exports",
+    "text": "6.1 Exports\n\n\nCode\ndf.to_csv(\"perimetres_irrigues_clean.csv\", index=False, encoding=\"utf-8\")\nkpi_df.to_csv(\"kpi_perimetres_irrigues.csv\", index=False, encoding=\"utf-8\")\nprint(\"✅ Exports générés.\")\n\n\n✅ Exports générés."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Analyse des périmètres irrigués",
+    "section": "",
+    "text": "1 Objectif\nCe site présente une analyse descriptive des périmètres irrigués en Tunisie : superficies irrigables, irriguées et exploitées, ainsi que des taux (irrigation/exploitation).\n\n\n2 Aperçu KPI\n\n\n\n\n\n\n\n\n\nKPI\nValeur\n\n\n\n\n0\nNb lignes\n28.00\n\n\n1\nNb délégations\n7.00\n\n\n2\nNb années\n4.00\n\n\n3\nTotal irrigable (ha)\n32830.00\n\n\n4\nTotal irriguée (ha)\n11631.00\n\n\n5\nTotal exploitée (ha)\n14905.00\n\n\n6\nTaux irrigation moyen (%)\n34.49\n\n\n\n\n\n\n\n\n\n3 Graphique rapide — évolution annuelle"
+  }
+]
